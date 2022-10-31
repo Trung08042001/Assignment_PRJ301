@@ -8,7 +8,7 @@ package dal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import model.Instructor;
+import models.Instructor;
 
 /**
  *

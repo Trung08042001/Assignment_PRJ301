@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dal.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,6 +12,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import models.Slot;
 
 /**
  *
@@ -31,18 +34,18 @@ public class Schedulde extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Schedulde</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Schedulde at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        GroupDAO gdao = new GroupDAO();
+        String campus = request.getParameter("campus");
+        String lecture = request.getParameter("lecture");
+        if (lecture!=null) {
+            lecture= lecture.toLowerCase();
         }
+        SlotDAO sdao = new SlotDAO();
+        ArrayList<Slot> slist = sdao.getAllSlot(campus, lecture);
+        ArrayList clist = gdao.getAllCampus();
+        request.setAttribute("clist", clist);
+        request.setAttribute("slist", slist);
+        request.getRequestDispatcher("schedule.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
